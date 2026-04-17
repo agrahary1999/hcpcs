@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Login page for AI SDLC Automation Platform">
+  <meta name="theme-color" content="#0066cc">
+  <title>Login - AI SDLC Automation Platform</title>
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="../styles/reset.css">
+  <link rel="stylesheet" href="../styles/login.css">
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-form-wrapper">
+      <h1 class="login-heading">Welcome Back</h1>
+      
+      <form 
+        id="loginForm" 
+        class="login-form" 
+        action="#" 
+        method="post" 
+        novalidate
+        aria-label="Login form"
+      >
+        <!-- Username Field -->
+        <div class="form-group">
+          <label 
+            for="username" 
+            class="form-label"
+            id="username-label"
+          >
+            Username
+          </label>
+          <input 
+            type="text" 
+            id="username" 
+            name="username" 
+            class="form-input" 
+            placeholder="Enter your username"
+            required
+            maxlength="255"
+            autocomplete="username"
+            aria-labelledby="username-label"
+            aria-required="true"
+            aria-describedby="username-error"
+          >
+          <span 
+            id="username-error" 
+            class="error-message" 
+            role="alert" 
+            aria-live="polite"
+          ></span>
+        </div>
+        
+        <!-- Password Field -->
+        <div class="form-group">
+          <label 
+            for="password" 
+            class="form-label"
+            id="password-label"
+          >
+            Password
+          </label>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            class="form-input" 
+            placeholder="Enter your password"
+            required
+            maxlength="128"
+            autocomplete="current-password"
+            aria-labelledby="password-label"
+            aria-required="true"
+            aria-describedby="password-error"
+          >
+          <span 
+            id="password-error" 
+            class="error-message" 
+            role="alert" 
+            aria-live="polite"
+          ></span>
+        </div>
+        
+        <!-- Submit Button -->
+        <button 
+          type="submit" 
+          class="login-button"
+          aria-label="Submit login form"
+        >
+          Log In
+        </button>
+      </form>
+      
+      <!-- Additional Footer Links -->
+      <div class="login-footer">
+        <p>Don't have an account? <a href="#" aria-label="Sign up for a new account">Sign up</a></p>
+        <p><a href="#" aria-label="Reset your password">Forgot your password?</a></p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- JavaScript for form handling -->
+  <script>
+    (function() {
+      'use strict';
+      
+      const loginForm = document.getElementById('loginForm');
+      const usernameInput = document.getElementById('username');
+      const passwordInput = document.getElementById('password');
+      const usernameError = document.getElementById('username-error');
+      const passwordError = document.getElementById('password-error');
+      
+      // Prevent default form submission until backend is implemented
+      loginForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        // Clear previous errors
+        clearErrors();
+        
+        // Validate form
+        let isValid = true;
+        
+        // Validate username
+        if (!usernameInput.value.trim()) {
+          showError(usernameInput, usernameError, 'Username is required');
+          isValid = false;
+        } else if (usernameInput.value.length > 255) {
+          showError(usernameInput, usernameError, 'Username must be 255 characters or less');
+          isValid = false;
+        }
+        
+        // Validate password
+        if (!passwordInput.value) {
+          showError(passwordInput, passwordError, 'Password is required');
+          isValid = false;
+        } else if (passwordInput.value.length > 128) {
+          showError(passwordInput, passwordError, 'Password must be 128 characters or less');
+          isValid = false;
+        }
+        
+        if (isValid) {
+          // Placeholder for future backend integration
+          console.log('Form validation passed. Ready for backend integration.');
+          console.log('Username:', usernameInput.value);
+          console.log('Password: [REDACTED]');
+          
+          // Future: Submit to backend API
+          // fetch('/api/auth/login', { method: 'POST', body: formData })
+        }
+      });
+      
+      // Real-time validation on blur
+      usernameInput.addEventListener('blur', function() {
+        if (!usernameInput.value.trim()) {
+          showError(usernameInput, usernameError, 'Username is required');
+        } else {
+          clearFieldError(usernameInput, usernameError);
+        }
+      });
+      
+      passwordInput.addEventListener('blur', function() {
+        if (!passwordInput.value) {
+          showError(passwordInput, passwordError, 'Password is required');
+        } else {
+          clearFieldError(passwordInput, passwordError);
+        }
+      });
+      
+      // Clear errors on input
+      usernameInput.addEventListener('input', function() {
+        if (usernameInput.classList.contains('error')) {
+          clearFieldError(usernameInput, usernameError);
+        }
+      });
+      
+      passwordInput.addEventListener('input', function() {
+        if (passwordInput.classList.contains('error')) {
+          clearFieldError(passwordInput, passwordError);
+        }
+      });
+      
+      function showError(inputElement, errorElement, message) {
+        inputElement.classList.add('error');
+        inputElement.setAttribute('aria-invalid', 'true');
+        errorElement.textContent = message;
+        errorElement.classList.add('visible');
+      }
+      
+      function clearFieldError(inputElement, errorElement) {
+        inputElement.classList.remove('error');
+        inputElement.setAttribute('aria-invalid', 'false');
+        errorElement.textContent = '';
+        errorElement.classList.remove('visible');
+      }
+      
+      function clearErrors() {
+        clearFieldError(usernameInput, usernameError);
+        clearFieldError(passwordInput, passwordError);
+      }
+      
+      // Keyboard navigation enhancement
+      loginForm.addEventListener('keydown', function(event) {
+        // Allow Enter key to submit form from any input
+        if (event.key === 'Enter' && (event.target === usernameInput || event.target === passwordInput)) {
+          event.preventDefault();
+          loginForm.dispatchEvent(new Event('submit'));
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
